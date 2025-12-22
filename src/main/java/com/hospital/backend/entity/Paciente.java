@@ -6,57 +6,46 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "Pacientes")
-@Getter
-@Setter
-@NoArgsConstructor
+@Table(name = "pacientes")
+@Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class Paciente {
 
     @Id
-    @Column(length = 8)
+    @Column(name = "dni", length = 8)
     private String dni;
 
-    @Column(nullable = false, length = 50)
     private String nombre;
-
-    @Column(nullable = false, length = 50)
     private String apellido;
 
     @Column(name = "fecha_nacimiento", nullable = false)
     private LocalDate fechaNacimiento;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private Genero genero;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "estado_civil", nullable = false)
     private EstadoCivil estadoCivil;
 
-    @Column(nullable = false, length = 50)
     private String nacionalidad;
-
-    @Column()
     private String domicilio;
 
-    @Column(unique = true, length = 100)
+    @Column(name = "codigo_postal", length = 10)
+    private String codigoPostal;
+
+    private String ciudad;
+    private String pais;
+
+    @Column(unique = true)
     private String email;
 
-    @Column(name = "fecha_creacion", nullable = false)
-    @Builder.Default
-    private LocalDateTime fechaCreacion = LocalDateTime.now();
+    @Column(name = "fecha_creacion", updatable = false)
+    private LocalDateTime fechaCreacion;
 
-    public enum Genero { Masculino, Femenino, Otro }
-    public enum EstadoCivil {     Otro,
-        Soltero,
-        Soltera,
-        Casado,
-        Casada,
-        Divorciado,
-        Divorciada,
-        Viudo,
-        Viuda
+    @PrePersist
+    public void prePersist() {
+        this.fechaCreacion = LocalDateTime.now();
     }
 }
