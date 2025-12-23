@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "pacientes")
@@ -48,4 +50,7 @@ public class Paciente {
     public void prePersist() {
         this.fechaCreacion = LocalDateTime.now();
     }
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL)
+    private List<HistoriaClinica> historiaClinica = new ArrayList<>();
+
 }

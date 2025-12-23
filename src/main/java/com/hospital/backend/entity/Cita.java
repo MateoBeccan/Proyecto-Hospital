@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "Citas")
@@ -41,12 +43,15 @@ public class Cita {
     @Column(name = "fecha_creacion", updatable = false)
     private LocalDateTime fechaCreacion;
 
+    @OneToMany(mappedBy = "cita", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<com.hospital.backend.entity.CitaMedicamento> medicamentos = new ArrayList<>();
+
     @PrePersist
     public void prePersist() {
         this.fechaCreacion = LocalDateTime.now();
     }
 
     public enum TipoCita {
-        CONSULTA, INTERNACION, ESTUDIO
+        CONSULTA, INTERNACION, ESTUDIO, REVISION, CIRUGIA, VACUNACION, EMERGENCIA, OTRO
     }
 }
